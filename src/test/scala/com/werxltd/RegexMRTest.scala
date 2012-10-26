@@ -1,4 +1,4 @@
-package com.mcafee
+package com.werxltd
 
 import junit.framework._
 import org.junit.Test
@@ -48,8 +48,18 @@ class RegexMRTest extends TestCase("regex") {
     
     mapper.map(null, value, output)
     verify(output).write(new Text(".*"), new LongWritable(1))
+  }
+  
+  @Test
+  def testMapper2 = {
+    val mapper = new RegexMRMapper()
+    mapper.regexes = List(".*", "(?i)PAYMODE")
+    
+    val value = new Text(test_strings(1))
+    val output = mock(classOf[RegexMRMapper#Context])
+    
+    mapper.map(null, value, output)
     verify(output).write(new Text("(?i)PAYMODE"), new LongWritable(1))
-    verify(output).write(new Text("sdafsadfasdfsdf"), new LongWritable(1))
   }
   
   // Make sure 1+1 still equals 2
@@ -62,9 +72,10 @@ class RegexMRTest extends TestCase("regex") {
     values.add(new LongWritable(1))
     values.add(new LongWritable(1))
     reducer.reduce(key, values, output)
-    verify(output).write(key, new LongWritable(4))
+    verify(output).write(key, new LongWritable(2))
   }
   
+//  @TODO Broken, needs to be fixed
 //  @Test
 //  def testWholeJob = {
 //    FileUtils.deleteDirectory(new File(outputdir))
@@ -73,8 +84,10 @@ class RegexMRTest extends TestCase("regex") {
 //
 //    val result = scala.io.Source.fromFile(outputdir + "/part-r-00000").getLines.toList
 //  
-//    assert(result.contains(".*	5"))
-//                           
+//    println("result: "+result)
+//    
+//    assert(result.contains(".* 5"))
+//          
 //    FileUtils.deleteDirectory(new File(outputdir))
 //  }
 }

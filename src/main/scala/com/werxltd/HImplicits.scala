@@ -1,4 +1,4 @@
-package com.mcafee
+package com.werxltd
 
 import org.apache.hadoop.io.{LongWritable, Text}
 import org.apache.hadoop.fs.Path
