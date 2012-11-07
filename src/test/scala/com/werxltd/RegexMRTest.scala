@@ -41,9 +41,9 @@ class RegexMRTest extends TestCase("regex") {
   @Test
   def testMapper1 = {
     val mapper = new RegexMRMapper()
-    mapper.regexes = List(".*", "(?i)PAYMODE")
+    mapper.regexes = List(".*")
     
-    val value = new Text(test_strings(1))
+    val value = new Text(test_strings(0))
     val output = mock(classOf[RegexMRMapper#Context])
     
     mapper.map(null, value, output)
@@ -53,13 +53,13 @@ class RegexMRTest extends TestCase("regex") {
   @Test
   def testMapper2 = {
     val mapper = new RegexMRMapper()
-    mapper.regexes = List(".*", "(?i)PAYMODE")
+    mapper.regexes = List(".*(?i)PAYMODE.*")
     
-    val value = new Text(test_strings(1))
+    val value = new Text(test_strings(0))
     val output = mock(classOf[RegexMRMapper#Context])
     
     mapper.map(null, value, output)
-    verify(output).write(new Text("(?i)PAYMODE"), new LongWritable(1))
+    verify(output).write(new Text(".*(?i)PAYMODE.*"), new LongWritable(1))
   }
   
   // Make sure 1+1 still equals 2
